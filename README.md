@@ -58,11 +58,11 @@ The AI provided a refactored `main.tf` that:
 
 ### **Pipeline Success**
 The Jenkins pipeline successfully checked out the code, passed the security scan (after remediation), and created the Terraform execution plan.
-![Jenkins Pipeline Success](screenshots/pipeline_success.jpg)
+![Jenkins Pipeline Success](screenshots/pipeline_success.JPG)
 
 ### **Application Running on Cloud**
 The web application was automatically deployed using a User Data script and is accessible via the AWS Public IP.
-![App on Cloud](screenshots/app_on_cloud.jpg)
+![App on Cloud](screenshots/app_on_cloud.JPG)
 
 ---
 
