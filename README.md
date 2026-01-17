@@ -27,12 +27,12 @@ The initial Terraform code contained intentional vulnerabilities to simulate a r
 * **Port 22 (SSH)** was open to the public internet (`0.0.0.0/0`).
 * **Root Volume** was unencrypted.
 
-![Initial Failing Jenkins Scan](screenshots/failed_scan.jpg)
+![Initial Failing Jenkins Scan](screenshots/FailedScan.jpeg)
 
 ### **B. Final Passing Scan (The Fix)**
 After applying the AI-generated fixes, the critical vulnerabilities were resolved. The security group was locked down, and encryption was enabled.
 
-![Final Passing Jenkins Scan](screenshots/passed_scan.jpg)
+![Final Passing Jenkins Scan](screenshots/PassedScan.jpeg)
 
 ---
 
