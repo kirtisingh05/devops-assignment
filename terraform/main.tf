@@ -4,11 +4,10 @@ provider "aws" {
 
 # 1. Secure Security Group
 resource "aws_security_group" "web_sg" {
-  name        = "devops-assignment-sg-secure-final"
+  name        = "devops-assignment-sg-strict"
   description = "Security group for web server with restricted access"
 
-  # [FIX 1] SSH RESTRICTED: Only allow access from one specific IP (not the whole world)
-  # This fixes the "CRITICAL: Ingress from public internet" error.
+  # [FIX 1] INGRESS: SSH Restricted to specific IP
   ingress {
     from_port   = 22
     to_port     = 22
@@ -17,7 +16,7 @@ resource "aws_security_group" "web_sg" {
     description = "Allow SSH from internal admin IP only"
   }
 
-  # HTTP is allowed for the website (This is safe/normal for a web server)
+  # INGRESS: HTTP Allowed (Standard for Web Server)
   ingress {
     from_port   = 80
     to_port     = 80
@@ -26,13 +25,22 @@ resource "aws_security_group" "web_sg" {
     description = "Allow HTTP web traffic from the internet"
   }
 
-  # Egress (Outbound) - allow server to talk to the internet
+  # [FIX 3 - THE NEW FIX] EGRESS: Only allow HTTP/HTTPS (No "All Traffic")
+  # This fixes the "CRITICAL: Egress" error.
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow all outbound traffic"
+    description = "Allow HTTP outbound for updates"
+  }
+
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow HTTPS outbound for updates"
   }
 }
 
@@ -43,19 +51,17 @@ resource "aws_instance" "web_server" {
 
   security_groups = [aws_security_group.web_sg.name]
 
-  # [FIX 2] ENCRYPTED ROOT VOLUME: Protects data at rest.
-  # This fixes the "HIGH: Unencrypted root block device" error.
+  # [FIX 2] ENCRYPTED ROOT VOLUME
   root_block_device {
     encrypted = true
   }
 
-  # [FIX 3] IMDSv2: Prevents SSRF attacks.
+  # [FIX 4] IMDSv2
   metadata_options {
     http_tokens   = "required"
     http_endpoint = "enabled"
   }
 
-  # Script to launch the website
   user_data = <<-EOF
               #!/bin/bash
               sudo apt-get update
@@ -71,7 +77,6 @@ resource "aws_instance" "web_server" {
   }
 }
 
-# 3. Output URL
 output "website_url" {
   value = "http://${aws_instance.web_server.public_ip}"
 }
