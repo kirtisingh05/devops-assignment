@@ -16,7 +16,7 @@ This project demonstrates a complete DevSecOps workflow. The objective was to pr
 * **Orchestration:** Terraform
 * **CI/CD:** Jenkins
 * **Security Scanning:** Trivy
-* **AI Tool:** Gemini/ChatGPT (used for remediation analysis)
+* **AI Tool:** Gemini (used for remediation analysis)
 
 ---
 
@@ -64,8 +64,8 @@ The Jenkins pipeline successfully checked out the code, passed the security scan
 The web application was automatically deployed using a User Data script and is accessible via the AWS Public IP.
 ![App on Cloud](screenshots/app_on_cloud.JPG)
 
+Public IP - http://54.196.207.111/
 ---
 
 ## 6. Video Demonstration
-**[Link to Video Recording Here]**
-*(Paste your video link here)*
+*([Link to Video Recording](https://drive.google.com/file/d/1dB4L7RXw91HVDzBqFZ0Haxl5gjWEw8Dt/view?usp=sharing))*
